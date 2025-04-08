@@ -1,0 +1,44 @@
+{% extends "template.html" %}
+
+{% block body %}
+    <h2>Pomodoro Timer</h2>
+    <div id="timer" style="font-size: 60px; margin: 20px 0;">25:00</div>
+    <button onclick="startTimer()">Iniciar</button>
+    <button onclick="resetTimer()">Resetar</button>
+
+    <script>
+        let totalTime = 25 * 60;
+        let timer;
+        let running = false;
+
+        function updateDisplay() {
+            let minutes = Math.floor(totalTime / 60);
+            let seconds = totalTime % 60;
+            document.getElementById("timer").innerText =
+                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+        
+        function startTimer() {
+            if (running) return;
+            running = true;
+            timer = setInterval(() => {
+                if (totalTime > 0) {
+                    totalTime--;
+                    updateDisplay();
+                } else {
+                    clearInterval(timer);
+                    alert("Tempo finalizado! Faça uma pausa.");
+                }
+            }, 1000);
+        }
+
+        function resetTimer() {
+            clearInterval(timer);
+            totalTime = 25 * 60;
+            updateDisplay();
+            running = false;
+        }
+
+        updateDisplay();
+    </script>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "template.html" %} {% block body %}
+
+<h2>Estou fazendo alguns teste</h2>
+<p>login!</p>
+
+<form action="/login" method="POST">
+    Usuário: <input type="text" name="username" id="name" class="form-feild"><br>
+    Senha: <input type="password" name="password" class="form-feild"><br>
+    <button type="submit" value="Entrar" class="add-btn">Login</button>
+</form>
+
+<br>
+<br>
+
+{% endblock %}
