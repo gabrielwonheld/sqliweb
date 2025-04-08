@@ -1,0 +1,19 @@
+{% extends "template.html" %} {% block body %}
+
+<h2>Minhas Metas</h2>
+<form method="POST">
+    <input type="text" name="search" placeholder="Buscar por título" value="{{ term }}">
+    <input type="submit" value="Buscar">
+</form>
+
+{% if results %}
+    <ul>
+        {% for goal in results %}
+            <li><b>{{ goal.title }}</b> - Produtividade: {{ goal.productivity_score }} - Pomodoros: {{ goal.pomodoro_count }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>Nenhuma meta encontrada.</p>
+{% endif %}
+
+{% endblock %}

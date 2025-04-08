@@ -20,6 +20,77 @@ conn_str = (
     "PWD=YourStrong!Passw0rd"
 )
 
+
+@app.route("/add_goal", methods=["GET", "POST"])
+def add_goal():
+    if "username" not in session:
+        return redirect(url_for('login'))
+
+    if request.method == "POST":
+        title = request.form["title"]
+        score = request.form["score"]
+        pomodoros = request.form["pomodoros"]
+
+        try:
+            conn = pyodbc.connect(conn_str)
+            cursor = conn.cursor()
+
+            # Pegando user_id de forma segura
+            cursor.execute("SELECT id FROM users WHERE username = ?", session["username"])
+            user = cursor.fetchone()
+
+            if user:
+                # Injeção possível aqui se não usar parâmetros
+                query = f"""
+                    INSERT INTO goals (user_id, title, productivity_score, pomodoro_count)
+                    VALUES ({user.id}, '{title}', {score}, {pomodoros})
+                """
+                print("[DEBUG] Query:", query)
+                cursor.execute(query)
+                conn.commit()
+        except Exception as e:
+            return f"<h3>Erro: {str(e)}</h3>", 500
+        finally:
+            conn.close()
+
+        return redirect(url_for("view_goals"))
+
+    return render_template("add_goal.html")
+
+
+
+@app.route("/view_goals", methods=["GET", "POST"])
+def view_goals():
+    results = []
+    term = ""
+    if "username" not in session:
+        return redirect(url_for('login'))
+
+    if request.method == "POST":
+        term = request.form["search"]
+    
+    try:
+        conn = pyodbc.connect(conn_str)
+        cursor = conn.cursor()
+
+        # Vulnerável a SQLi
+        query = f"""
+            SELECT title, productivity_score, pomodoro_count
+            FROM goals
+            WHERE title LIKE '%{term}%'
+        """
+        print("[DEBUG] Query:", query)
+        cursor.execute(query)
+        results = cursor.fetchall()
+    except Exception as e:
+        return f"<h3>Erro: {str(e)}</h3>", 500
+    finally:
+        conn.close()
+
+    return render_template("view_goals.html", results=results, term=term)
+
+
+
 # Cria a tabela (uma vez só)
 def init_db():
     try:
@@ -34,6 +105,19 @@ def init_db():
                 email NVARCHAR(255) NOT NULL
             )
         ''')
+
+        cursor.execute('''
+            IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='goals' AND xtype='U')
+            CREATE TABLE goals (
+                id INT IDENTITY(1,1) PRIMARY KEY,
+                user_id INT,
+                title NVARCHAR(255),
+                productivity_score INT,
+                pomodoro_count INT,
+                FOREIGN KEY (user_id) REFERENCES users(id)
+            )
+        ''')
+
         conn.commit()
         conn.close()
     except Exception as e:

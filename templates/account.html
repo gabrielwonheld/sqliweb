@@ -3,9 +3,19 @@
 <h2>Account Page</h2>
 <p>This is the account page!</p>
 
+
+<a href="{{ url_for('add_goal') }}">
+    <button type="submit" class="add-btn">adicionar tarefa</button>
+</a>
+
+<!-- <a href="{{ url_for('view_goals') }}"> -->
+    <!-- <button type="submit" class="add-btn">visualizar tarefa</button> -->
+<!-- </a> -->
+
 <br>
 <h3>Welcome {{username}}</h3>
 <p>Look into the code in app.py to see how the user's name is passed from the previous page(home.html) to this one</p>
 <br>
+
 
 {% endblock %}
