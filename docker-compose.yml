@@ -11,6 +11,8 @@ services:
   
   web:
     build: .
+    volumes:
+      - .:/app
     ports:
       - "80:80"
     depends_on:
