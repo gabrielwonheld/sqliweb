@@ -163,28 +163,36 @@ def login():
 
     error = None
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
 
-        try:
+        action = request.form.get("action")
 
-            conn = pyodbc.connect(conn_str)
-            cursor = conn.cursor()
+        if action == "register":
+            return redirect(url_for("register"))
 
-            # VULNERÁVEL A SQL INJECTION!
-            query = f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
-            print("[DEBUG] Query:", query)
-            cursor.execute(query)
-            user = cursor.fetchone()
-            if user:
-                session["username"] = username
-                return redirect(url_for('account'))
-            else:
-                return "<h3>Credenciais inválidas.</h3>", 403
-        except Exception as e:
-            return f"<h3>Erro: {str(e)}</h3>", 500
-        finally:
-            conn.close()
+        elif action == "Entrar":
+            username = request.form["username"]
+            password = request.form["password"]
+    
+    
+            try:
+            
+                conn = pyodbc.connect(conn_str)
+                cursor = conn.cursor()
+    
+                # VULNERÁVEL A SQL INJECTION!
+                query = f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
+                print("[DEBUG] Query:", query)
+                cursor.execute(query)
+                user = cursor.fetchone()
+                if user:
+                    session["username"] = username
+                    return redirect(url_for('account'))
+                else:
+                    return "<h3>Credenciais inválidas.</h3>", 403
+            except Exception as e:
+                return f"<h3>Erro: {str(e)}</h3>", 500
+            finally:
+                conn.close()
     return render_template('login.html',error=error)
 
 
