@@ -2,18 +2,23 @@
 <!-- This is the template file. Any code written here will automatically be carried onto the files that extend from this file(eg: home.html, account.html) -->
 <head>
     <link rel="stylesheet" href="../static/style.css">
-    <title>Python Website Demo</title>
+    <title>+Produtivo</title>
 </head>
 
 <body>
     <nav>
         <ul>
-            <li><a href="home">INICIO</a></li>
+            <li><a href="/">inicio</a></li>
             <li><a href="login">login</a></li>
             <li><a href="account">conta</a></li>
-            <li><a href="pomodoro">Pomodoro</a></li>
+            <!--<li><a href="pomodoro">Pomodoro</a></li> -->
         </ul>
     </nav>
+
+    <form action="{{ url_for('auth.logout') }}" method="get" style="display:inline;">
+        <button class="todo-btn" type="submit">Logoff</button>
+    </form>
+    
     <div>
         <center>
             <h1 style="font-family:verdana;">NixTools</h1>

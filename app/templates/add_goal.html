@@ -45,8 +45,11 @@
     <input type="number" name="score" placeholder="Nota de Produtividade (0-10)" min="0" max="10" required><br>
     <input type="number" name="pomodoros" placeholder="Qtd. de Pomodoros" min="0" required><br>
     <input type="submit" value="Salvar" class="add-btn">
+    
     </form>
-
+    <a href="{{ url_for('goals.view_goals') }}">
+        <button type="submit" class="add-btn">pesquisar tarefa</button>
+    </a>
 
 
 {% endblock %}

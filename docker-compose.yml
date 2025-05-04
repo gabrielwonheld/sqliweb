@@ -1,19 +1,44 @@
 version: '3.8'
 
 services:
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: todo_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sqlserver
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=YourStrong!Passw0rd
     ports:
       - "1433:1433"
-  
+    volumes:
+      - mssql_data:/var/opt/mssql
+
   web:
     build: .
+    container_name: flask_web
     volumes:
       - .:/app
     ports:
       - "80:80"
     depends_on:
-      - sqlserver
+      - postgres
+    environment:
+      DB_HOST: postgres
+      DB_NAME: todo_db
+      DB_USER: postgres
+      DB_PASS: postgres
+
+volumes:
+  pgdata:
+  mssql_data:

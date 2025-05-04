@@ -1,0 +1,45 @@
+{% extends "template.html" %} 
+{% block body %}
+
+<div id="header">
+    <h2 style="text-align:center;">Buscar Metas</h2>
+</div>
+
+<!-- FORMULÁRIO DE BUSCA -->
+<div id="form">
+    <form method="GET" action="/buscar">
+        <input class="todo-input" type="text" name="q" placeholder="Buscar por título" value="{{ term }}" required>
+        <button class="todo-btn" type="submit">Buscar</button>
+    </form>
+</div>
+
+<!-- RESULTADOS -->
+<div id="myUnOrdList">
+    {% if tarefas %}
+        <ul class="todo-list">
+            {% for tarefa in tarefas %}
+                <li class="todo">
+                    {{ tarefa[1] }} - <strong>{{ tarefa[2] }}</strong>
+
+                    <form method="POST" action="/concluir/{{ tarefa[0] }}" style="display:inline;">
+                        <button type="submit" class="check-btn"><i class="fas fa-check"></i></button>
+                    </form>
+
+                    <form method="POST" action="/excluir/{{ tarefa[0] }}" style="display:inline;">
+                        <button type="submit" class="trash-btn"><i class="fas fa-trash"></i></button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p style="text-align:center;">Nenhuma tarefa encontrada.</p>
+    {% endif %}
+</div>
+
+<!-- BOTÃO PARA ADICIONAR TAREFA -->
+<a href="{{ url_for('todo.adicionar_tarefa') }}">
+    <button  type="submit" class="add-btn">Adicionar Tarefas</button>
+</a>
+</div>
+
+{% endblock %}

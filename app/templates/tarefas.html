@@ -1,0 +1,47 @@
+{% extends "template.html" %} 
+{% block body %}
+
+<!-- CABEÇALHO -->
+<div id="header">
+    <h2 style="text-align:center;">Adicionar Nova Tarefa</h2>
+</div>
+
+<!-- FORMULÁRIO DE ADIÇÃO -->
+<div id="form">
+    <form method="POST" action="/adicionar">
+        <input class="todo-input" type="text" name="titulo" placeholder="Título da tarefa" required>
+        <select name="status" class="todo-input" required>
+            <option value="pendente">Pendente</option>
+            <option value="concluido">Concluído</option>
+        </select>
+        <button class="todo-btn" type="submit">Adicionar</button>
+    </form>
+</div>
+
+<!-- LISTA DE TAREFAS -->
+<div id="myUnOrdList">
+    {% if tarefas %}
+        <ul class="todo-list">
+            {% for tarefa in tarefas %}
+                <li class="todo">
+                    {{ tarefa[1] }} - <strong>{{ tarefa[2] }}</strong>
+
+                    <form method="POST" action="/concluir/{{ tarefa[0] }}" style="display:inline;">
+                        <button type="submit" class="check-btn"><i class="fas fa-check"></i></button>
+                    </form>
+
+                    <form method="POST" action="/excluir/{{ tarefa[0] }}" style="display:inline;">
+                        <button type="submit" class="trash-btn"><i class="fas fa-trash"></i></button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p style="text-align:center;">Nenhuma tarefa adicionada ainda.</p>
+    {% endif %}
+</div>
+
+<a href="{{ url_for('todo.buscar') }}">
+    <button  type="submit" class="add-btn">Pesquisar Tarefas</button>
+</a>
+{% endblock %}

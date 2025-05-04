@@ -1,6 +1,6 @@
 FROM python:3.9
 
-# Instalar dependências do sistema
+# Instalar dependências do sistema (incluindo libsqlite3-dev)
 RUN apt-get update && apt-get install -y \
     curl \
     gnupg \
@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
     libssl-dev \
+    libsqlite3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Adicionar repositório do Microsoft ODBC Driver

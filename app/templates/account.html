@@ -4,15 +4,15 @@
 <p>This is the account page!</p>
 
 
-<a href="{{ url_for('add_goal') }}">
-    <button type="submit" class="add-btn">adicionar tarefa</button>
+<a href="{{ url_for('goals.add_goal') }}">
+    <button type="submit" class="add-btn">Pomodoro</button>
 </a>
 
-<a href="{{ url_for('view_goals') }}">
-    <button type="submit" class="add-btn">pesquisar tarefa</button>
+<a href="{{ url_for('todo.adicionar_tarefa') }}">
+    <button type="submit" class="add-btn">Check List</button>
 </a>
 
-<!-- <a href="{{ url_for('view_goals') }}"> -->
+<!-- <a href="{{ url_for('goals.view_goals') }}"> -->
     <!-- <button type="submit" class="add-btn">visualizar tarefa</button> -->
 <!-- </a> -->
 
